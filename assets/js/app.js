@@ -9,7 +9,7 @@ require(["esri/Map", "esri/views/MapView", "esri/layers/GeoJSONLayer", "esri/lay
       const unidadesConservacao = "https://gis-portal.westeurope.cloudapp.azure.com/server/rest/services/00_PUBLICACOES/amb_unidades_conservacao_2021/FeatureServer/0?f=json";
 
       /**
-       * Configuração
+       * Configuração do layer de Municípios
        */
       const geojsonLayer = new GeoJSONLayer({
         url: divisaoMunicipio,
@@ -19,7 +19,9 @@ require(["esri/Map", "esri/views/MapView", "esri/layers/GeoJSONLayer", "esri/lay
         }
       });
 
-
+      /**
+       * Configuração do layer de Limites do Estado
+       */
       const featureLayer = new FeatureLayer({
         url: limiteEstadual,
           popupTemplate: {
@@ -28,7 +30,9 @@ require(["esri/Map", "esri/views/MapView", "esri/layers/GeoJSONLayer", "esri/lay
           }
       });
 
-
+      /**
+       * Configuração do layer de Unidades de Conservação
+       */
       const conservationLayer = new FeatureLayer({
         url: unidadesConservacao,
           popupTemplate: {
@@ -37,7 +41,9 @@ require(["esri/Map", "esri/views/MapView", "esri/layers/GeoJSONLayer", "esri/lay
           }
       });
 
-
+      /**
+       * Definindo o formato do mapa além de quais Layers irão compor a visualização
+       */
       const map = new Map({
         basemap: "streets-navigation-vector",
         layers: [geojsonLayer, featureLayer, conservationLayer] 
@@ -54,6 +60,10 @@ require(["esri/Map", "esri/views/MapView", "esri/layers/GeoJSONLayer", "esri/lay
         zoom: 10
       });
 
+      /**
+       * Configuração para o mapa permitir alguns itens de configuração de exibição
+       * Serão exibidos no topo
+       */
 
       const layerList = new LayerList({
         view: view
@@ -68,7 +78,10 @@ require(["esri/Map", "esri/views/MapView", "esri/layers/GeoJSONLayer", "esri/lay
 
       view.ui.add(expand, "top-right");
 
-
+      /**
+       * Configuração para o mapa permitir alguns itens de configuração de exibição
+       * Serão exibidos no rodapé
+       */
       const legend = new Legend({
         view: view,
         container: "legendDiv"
@@ -78,7 +91,7 @@ require(["esri/Map", "esri/views/MapView", "esri/layers/GeoJSONLayer", "esri/lay
       view.ui.add(legend, "bottom-right");
 
       /**
-       * Criando os filtros
+       * Criando os filtros de áreas de conservação e seus campos HTML dinamicamente
        */
       const conservationCheckbox = document.createElement('input');
       conservationCheckbox.type = 'checkbox';
@@ -99,7 +112,9 @@ require(["esri/Map", "esri/views/MapView", "esri/layers/GeoJSONLayer", "esri/lay
         conservationLayer.visible = conservationCheckbox.checked;
       });
 
-
+      /**
+       * Criando os filtros de limites de municípios seus campos HTML dinamicamente
+       */
       const geojsonCheckbox = document.createElement('input');
       geojsonCheckbox.type = 'checkbox';
       geojsonCheckbox.id = 'toggleGeojsonLayer';
